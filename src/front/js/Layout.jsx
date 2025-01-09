@@ -11,8 +11,12 @@ import { Footer } from "./component/Footer.jsx";
 //Custom Pages
 import { Home } from "./pages/Home.jsx";
 import { Single } from "./pages/single";
-import { Demo } from "./pages/demo";
 import { Error404 } from "./pages/Error404.jsx";
+import { Contacts } from "./pages/Contacts.jsx";
+import { AddContact } from "./pages/AddContact.jsx";
+import { EditContact } from "./pages/EditContact.jsx";
+
+
 
 
 //create your first component
@@ -30,7 +34,9 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
+                        <Route element={<Contacts />} path="/contact" />
+                        <Route element={<AddContact/>} path="/add-contact" />
+                        <Route element={<EditContact/>} path="/edit-contact/:id"  />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />} path="*" />
                     </Routes>
