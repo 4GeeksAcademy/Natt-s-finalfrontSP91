@@ -5,9 +5,13 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaTrashAlt, FaEdit } from "reac
 
 export const Contacts = () => {
     const { store, actions } = useContext(Context); // Obtengo los datos del contexto
+    const handleErrorImg = (event) => {
+        event.target.src='https://starwars-visualguide.com/assets/img/placeholder.jpg'
+    }
 
     return (
         <div className="container">
+
             <h1 className="text-center mb-4">Contacts</h1>
 
             <div className="list-group">
@@ -17,10 +21,11 @@ export const Contacts = () => {
                             key={index}
                             className="list-group-item d-flex align-items-center justify-content-between flex-wrap p-3 mb-3 shadow-sm"
                         >
-                            {/* Imagen del contacto */}
+                            
                             <div className="d-flex align-items-center">
                                 <img
-                                    src="https://via.placeholder.com/100"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/0/08/MCM_London_May_15_-_Stormtrooper_%2818246218651%29.jpg"
+                                    onError={handleErrorImg}
                                     alt="contact"
                                     className="rounded-circle me-3"
                                     style={{ width: "80px", height: "80px" }}
@@ -41,7 +46,7 @@ export const Contacts = () => {
                                     </p>
                                 </div>
                             </div>
-                         
+
                             <div className="d-flex align-items-center">
                                 <Link to={`/edit-contact/${contact.id}`} className="btn btn-primary btn-sm me-2">
                                     <FaEdit />
@@ -56,10 +61,16 @@ export const Contacts = () => {
                                 </button>
                             </div>
                         </div>
+
                     ))
                 ) : (
-                    <p className="text-center">No hay contactos disponibles.</p>
+                    <p className="text-center">No contacts.</p>
                 )}
+                <div className="container-fluid d-flex justify-content-end">
+                    <Link to="/add-contact">
+                        <button className="btn btn-primary">Add new contact</button>
+                    </Link>
+                </div>
             </div>
         </div>
     );

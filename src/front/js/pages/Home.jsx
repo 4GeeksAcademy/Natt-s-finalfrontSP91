@@ -7,7 +7,7 @@ export const Home = () => {
 
 	return (
 		<div className="text-center mt-5">
-			<h1>contact list</h1>
+			<img src= {"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Star_Wars_Logo..png/640px-Star_Wars_Logo..png"}/>
 		</div>
 	);
 };

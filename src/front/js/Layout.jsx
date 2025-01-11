@@ -15,6 +15,13 @@ import { Error404 } from "./pages/Error404.jsx";
 import { Contacts } from "./pages/Contacts.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { CharacterById} from "./pages/CharacterById.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { PlanetById } from "./pages/PlanetById.jsx";
+import { Starships } from "./pages/Starships.jsx";
+import { StarshipsById } from "./pages/StarshipsById.jsx";
+
 
 
 
@@ -34,9 +41,15 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        <Route element={<Characters />} path="/characters" />
+                        <Route element={<CharacterById/>} path="/character/:id" />
+                        <Route element={<Planets />} path="/planets" />
+                        <Route element={<PlanetById />} path="/planet/:id" />
+                        <Route element={<Starships />} path="/starships" />
+                        <Route element={<StarshipsById />} path="/starship/:id" />
                         <Route element={<Contacts />} path="/contact" />
-                        <Route element={<AddContact/>} path="/add-contact" />
-                        <Route element={<EditContact/>} path="/edit-contact/:id"  />
+                        <Route element={<AddContact />} path="/add-contact" />
+                        <Route element={<EditContact />} path="/edit-contact/:id" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />} path="*" />
                     </Routes>
