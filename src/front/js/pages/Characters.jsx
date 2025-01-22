@@ -4,11 +4,11 @@ import { Context } from "../store/appContext";
 
 
 export const Characters = () => {
-    const { store, actions } = useContext(Context); 
+    const { store, actions } = useContext(Context);
     const handleErrorImg = (event) => {
-        event.target.src='https://starwars-visualguide.com/assets/img/placeholder.jpg'
+        event.target.src = 'https://starwars-visualguide.com/assets/img/placeholder.jpg'
     }
-    
+
 
     return (
         <div className="container">
@@ -28,7 +28,7 @@ export const Characters = () => {
                                     style={{ height: "300px", objectFit: "cover" }}
                                 />
                                 {/* Contenido de la tarjeta */}
-                                
+
                                 <div className="card-body card border-warning d-flex flex-column bg-dark">
                                     <h5 className="card-title text-center text-muted ">{character.name}</h5>
                                     <div className="mt-auto">
@@ -40,15 +40,21 @@ export const Characters = () => {
                                                 className="btn btn-outline-warning btn-sm"
                                                 onClick={() => actions.addFavorites(character.name)}
                                             >
-                                               <i className="far fa-heart text-warning"></i>
+                                                <i
+                                                    className={
+                                                        store.favorites.includes(character.name)
+                                                            ? "fas fa-heart text-warning"
+                                                            : "far fa-heart text-warning"
+                                                    }
+                                                ></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                         ))
-                    ) : (
+                    ))
+                ) : (
                     <p className="text-center">Help me Obi-Wan.</p>
                 )}
             </div>

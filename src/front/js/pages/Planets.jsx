@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 
 export const Planets = () => {
-    const { store, actions } = useContext(Context); 
+    const { store, actions } = useContext(Context);
+
+
     const handleErrorImg = (event) => {
-        event.target.src='https://starwars-visualguide.com/assets/img/placeholder.jpg'
+        event.target.src = 'https://starwars-visualguide.com/assets/img/placeholder.jpg'
     }
 
     return (
@@ -27,7 +29,7 @@ export const Planets = () => {
                                     style={{ height: "300px", objectFit: "cover" }}
                                 />
                                 {/* Contenido de la tarjeta */}
-                                
+
                                 <div className="card-body card border-warning d-flex flex-column bg-dark">
                                     <h5 className="card-title text-center text-muted ">{planet.name}</h5>
                                     <div className="mt-auto">
@@ -39,15 +41,21 @@ export const Planets = () => {
                                                 className="btn btn-outline-warning btn-sm"
                                                 onClick={() => actions.addFavorites(planet.name)}
                                             >
-                                               <i className="far fa-heart text-warning"></i>
+                                                <i
+                                                    className={
+                                                        store.favorites.includes(planet.name)
+                                                            ? "fas fa-heart text-warning"
+                                                            : "far fa-heart text-warning"
+                                                    }
+                                                ></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                         ))
-                    ) : (
+                    ))
+                ) : (
                     <p className="text-center">Help me Obi-Wan.</p>
                 )}
             </div>

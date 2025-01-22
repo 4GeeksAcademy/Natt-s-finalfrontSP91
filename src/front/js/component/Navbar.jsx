@@ -37,8 +37,23 @@ export const Navbar = () => {
 					<ul className="dropdown-menu dropdown-menu-end" aria-labelledby="favoritesDropdown">
 						{store.favorites.length > 0 ? (
 							store.favorites.map((item, index) => (
-								<li key={index} className="dropdown-item d-flex justify-content-between align-items-center">
-									<span> {item}</span>
+								<li key={index}
+									className="dropdown-item d-flex justify-content-between align-items-center">
+									<Link
+										to={
+											store.planets.some((planet) => planet.name === item)
+												? `/planet/${store.planets.find((planet) => planet.name === item).uid || store.planets.find((planet) => planet.name === item).id}`
+												: store.characters.some((character) => character.name === item)
+												? `/character/${store.characters.find((character) => character.name === item).uid || store.characters.find((character) => character.name === item).id}`
+												: store.starships.some((starship) => starship.name === item)
+												? `/starship/${store.starships.find((starship) => starship.name === item).uid || store.starships.find((starship) => starship.name === item).id}`
+												: "/"
+										}
+										className="text-decoration-none text-dark"
+									>
+										{item}
+									</Link>
+
 									<span onClick={() => actions.removeFavorites(item)}>
 										<i className="fas fa-trash text-warning ms-2"></i>
 									</span>
