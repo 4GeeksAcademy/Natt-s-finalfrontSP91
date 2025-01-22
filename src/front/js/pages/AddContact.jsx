@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";  // Importamos useNavigate
 import { Context } from "../store/appContext";
-
 
 export const AddContact = () => {
     const { store, actions } = useContext(Context);
@@ -10,14 +9,18 @@ export const AddContact = () => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
 
+    const navigate = useNavigate();  // Inicializamos useNavigate
+
     const handleSave = () => {
-       
         actions.addContact({
             name: fullName,
             email: email,
             phone: phone,
             address: address,
         });
+
+        // Redirigimos al usuario a la página de contactos
+        navigate("/contact");  // Asegúrate de que esta ruta sea la correcta
     };
 
     return (  
@@ -33,7 +36,7 @@ export const AddContact = () => {
                     id="fullName"
                     placeholder="Full Name"
                     value={fullName}
-                    onChange={(e) =>setFullName(e.target.value)} 
+                    onChange={(e) => setFullName(e.target.value)} 
                 />
             </div>
             <div className="mb-3">
@@ -50,7 +53,7 @@ export const AddContact = () => {
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="emailInput" className="form-label">
+                <label htmlFor="phone" className="form-label">
                    Phone
                 </label>
                 <input
@@ -63,7 +66,7 @@ export const AddContact = () => {
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="emailInput" className="form-label">
+                <label htmlFor="address" className="form-label">
                    Address
                 </label>
                 <input
