@@ -24,6 +24,7 @@ class Users(db.Model): #hacer GET users , GET PUT DELETE user
                  "first_name": self.first_name,
                  "last_name": self.last_name}
     
+
 #Instagram
 class Posts(db.Model): #hacer CRUD
     id = db.Column(db.Integer, primary_key=True)

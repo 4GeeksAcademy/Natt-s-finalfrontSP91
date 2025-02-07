@@ -10,9 +10,12 @@ import { Footer } from "./component/Footer.jsx";
 
 //Custom Pages
 import { Home } from "./pages/Home.jsx";
+import { Login } from "./pages/Login.jsx";
+import { SignUp } from "./pages/SignUp.jsx";
 import { Single } from "./pages/single";
 import { Error404 } from "./pages/Error404.jsx";
 import { Contacts } from "./pages/Contacts.jsx";
+import { UserPrivate } from "./pages/UserPrivate.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
 import { Characters } from "./pages/Characters.jsx";
@@ -48,6 +51,9 @@ const Layout = () => {
                         <Route element={<Starships />} path="/starships" />
                         <Route element={<StarshipsById />} path="/starship/:id" />
                         <Route element={<Contacts />} path="/contact" />
+                        <Route element={<UserPrivate />} path="/userprivate" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<SignUp />} path="/signup" />
                         <Route element={<AddContact />} path="/add-contact" />
                         <Route element={<EditContact />} path="/edit-contact/:id" />
                         <Route element={<Single />} path="/single/:theid" />

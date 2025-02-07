@@ -23,6 +23,12 @@ export const Navbar = () => {
 				<Link to="/contact" className="text-decoration-none">
 					<span className="navbar-brand text-muted h1 mx-3">Contacts</span>
 				</Link>
+				<Link to="/login" className="text-decoration-none">
+					<span className="navbar-brand text-muted h1 mx-3">Login</span>
+				</Link>
+				<Link to="/signup" className="text-decoration-none">
+					<span className="navbar-brand text-muted h1 mx-3">Sign Up</span>
+				</Link>
 
 				<div className="dropdown">
 					<button

@@ -4,11 +4,12 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import db, Users, Posts, Comments, Followers, Medias,Characters,CharacterFavorites,Planets,PlanetFavorites
+from api.models import db, Users, Posts, Comments, Followers, Medias, Characters, CharacterFavorites, Planets, PlanetFavorites
 import requests
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt
 
 
 api = Blueprint('api', __name__)
@@ -22,7 +23,7 @@ def handle_hello():
     return response_body, 200
 
 
-#Tokens
+#Login
 @api.route("/login", methods=["POST"])
 def login():
     response_body = {}
@@ -39,18 +40,35 @@ def login():
     response_body['message'] = 'User logged'
     return response_body, 200
 
-
+#endpoint de prueba
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     response_body = {}
-    # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
+    current_user = get_jwt_identity() #el email
+    aditional_claims = get_jwt() #datos adicionales
     response_body['message'] = f"Logged in as {current_user}"
     return response_body, 200
 
 
-#Users
+#SignUp
+@api.route('/signup', methods=['POST'])
+def signup():
+    response_body = {}
+    if request.method == 'POST':
+        data = request.json
+        row = Users(email=data.get('email'),
+                    password=data["password"],
+                    is_active=True,
+                    first_name=data.get('first_name'),
+                    last_name=data.get('last_name'))
+        db.session.add(row)
+        db.session.commit()
+        response_body['message'] = f'Nuevo usuario creado correctamente'
+        response_body['results'] = row.serialize()
+        return response_body, 200
+    
+
 @api.route('/users', methods=['GET'])
 def users():
     response_body = {}

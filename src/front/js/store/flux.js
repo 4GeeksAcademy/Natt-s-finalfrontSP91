@@ -25,6 +25,91 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			//SingUp
+			SignUp: async (userData) => {
+				const uri = `${process.env.BACKEND_URL}/api/signup`;
+				console.log("Llamando a:", uri);
+
+				const options = {
+					method : 'POST',
+					headers : {
+						"Content-Type": "application/json"
+				},
+				body: JSON.stringify(userData)
+			};
+			const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error", response.status, response.statusText)
+					return
+				}
+				const data = await response.json()
+				console.log("Respuesta del servidor:", data);
+				setStore({ signup: data.signup });
+			},
+
+			//Login
+			login: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				console.log(options);
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					// tratar el error
+					console.log('Error:', response.status, response.statusText);
+					if (response.status == 401) {
+						console.log('en el error 401');
+						setStore({alert: {text: 'Email o contraseña no válido', background: 'danger', visible: true}})
+					}
+					return   // IMPORTANTE
+				}
+				const data = await response.json()
+				localStorage.setItem('token', data.access_token)
+				setStore({
+					isLogged: true,
+					user: { email: data.results.email } 
+				})
+			},
+			getUser: async (userId) => {
+				const uri = `${process.env.BACKEND_URL}/api/users/${userId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('token')}`
+					}
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				console.log(data);
+				
+			},
+			accessProtected: async () => {
+				const uri = `${process.env.BACKEND_URL}/api/protected`;
+				const options = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('token')}`
+					}
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					// tratamos el erros
+					console.log('Error:', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({alert: {text: data.message, background: 'success', visible: true}})
+			},
+			
 			//boton favoritos
 			addFavorites: (item) =>{
 				const favorites = getStore().favorites;
@@ -37,38 +122,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const favorites = getStore().favorites;
 				setStore({favorites:favorites.filter((favorite) => favorite != item)})
 			},
-			//
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			getMessage: async () => {
-				try {
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				} catch (error) {
-					console.log("Error loading message from backend", error)
-				}
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-				//reset the global store
-				setStore({ demo: demo });
-			},
 			//CONTACT LIST
 			// GET: Obtener los contactos
 			getContacts: async () => {
-
 				const uri = `${baseURL}/agendas/${user}`;
 				const options = {
 					method: 'GET'
@@ -81,21 +137,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ contacts: data.contacts })
 			},
-
 			//DELETE:eliminar contactos
 			deleteContact: async (contactId) => {
 				const uri = `${baseURL}/agendas/${user}/contacts/${contactId}`;
 				const options = {
 					method: 'DELETE',
 				};
-
 				const response = await fetch(uri, options);
 				if (!response.ok) {
 					console.log('Error:', response.status, response.statusText);
 					return;
 				}
-
-
 				const { getContacts } = getActions();
 				getContacts();
 			},
@@ -120,7 +172,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const { getContacts } = getActions();
 				getContacts();
 			},
-
 			//POST: añadir contacto
 			addContact: async (contactData) => {
 				const uri = `${baseURL}/agendas/${user}/contacts`;
@@ -144,7 +195,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			//Starwars 
 			//Getcharacters
-
 			getCharacters: async () => {
 				const uri = `${baseUrlStarWars}/people`;
 				const options = {
@@ -158,7 +208,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ characters: data.results })
 				localStorage.setItem('localCharacters',JSON.stringify(data.results))
-
 			},
 			//GetCharacterID
 			getCharacter: async (id) => {
@@ -174,10 +223,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ character: data.result.properties })
 				localStorage.setItem('localCharacterId',JSON.stringify(data.result.properties))
-
 			},
 			//GetPlanets
-
 			getPlanets: async () => {
 				const uri = `${baseUrlStarWars}/planets`;
 				const options = {
@@ -209,9 +256,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('localPlanetId',JSON.stringify(data.result.properties))
 
 			},
-
 			//GetStarships
-
 			getStarships: async () => {
 				const uri = `${baseUrlStarWars}/starships`;
 				const options = {
@@ -243,8 +288,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('localStarshipsId',JSON.stringify(data.result.properties))
 
 			},
-
-
 
 		}
 
