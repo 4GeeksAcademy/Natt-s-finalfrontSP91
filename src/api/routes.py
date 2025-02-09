@@ -13,8 +13,7 @@ from flask_jwt_extended import get_jwt
 
 
 api = Blueprint('api', __name__)
-CORS(api)  # Allow CORS requests to this API
-
+CORS(api)  # All
 
 @api.route('/hello', methods=['GET'])
 def handle_hello():
@@ -33,12 +32,14 @@ def login():
     row = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active==True)).scalar()
     if not row:
         response_body['message'] = 'El usuario no exsiste'
-        return response_body, 404
+        return response_body, 401
     user = row.serialize()
     access_token = create_access_token(identity={'email ': user['email'], 'is active': user['is_active']})
     response_body['access_token'] = access_token
     response_body['message'] = 'User logged'
+    response_body['results'] = user
     return response_body, 200
+
 
 #endpoint de prueba
 @api.route("/protected", methods=["GET"])
@@ -69,6 +70,7 @@ def signup():
         return response_body, 200
     
 
+#Users
 @api.route('/users', methods=['GET'])
 def users():
     response_body = {}

@@ -9,26 +9,26 @@ export const SignUp = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
 
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
 
     const handleSignUp = () => {
-        actions.SignUp({
+        const result = actions.SignUp({
             email: email,
             password: password,
             first_name: firstName,
             last_name: lastName,
         });
 
-       
-        navigate("/login");  
+        navigate("/login"); 
+
     };
 
-    return (  
+    return (
         <div className="container">
             <h2 className="text-center">Sign Up</h2>
             <div className="mb-3">
                 <label htmlFor="fullName" className="form-label">
-                   First Name
+                    First Name
                 </label>
                 <input
                     type="text"
@@ -36,12 +36,12 @@ export const SignUp = () => {
                     id="firstName"
                     placeholder="First Name"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)} 
+                    onChange={(e) => setFirstName(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label htmlFor="fullName" className="form-label">
-                   Last Name
+                    Last Name
                 </label>
                 <input
                     type="text"
@@ -49,12 +49,12 @@ export const SignUp = () => {
                     id="lastName"
                     placeholder="Last Name"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)} 
+                    onChange={(e) => setLastName(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label htmlFor="emailInput" className="form-label">
-                   Email
+                    Email
                 </label>
                 <input
                     type="email"
@@ -62,12 +62,12 @@ export const SignUp = () => {
                     id="emailInput"
                     placeholder="name@example.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)} 
+                    onChange={(e) => setEmail(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label htmlFor="passwordInput" className="form-label">
-                   Password
+                    Password
                 </label>
                 <input
                     type="password"
@@ -75,10 +75,10 @@ export const SignUp = () => {
                     id="password"
                     placeholder="*****"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} 
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            
+
             <button className="btn btn-primary" onClick={handleSignUp}>
                 Sign Up
             </button>

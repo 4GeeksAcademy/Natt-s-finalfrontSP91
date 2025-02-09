@@ -7,6 +7,7 @@ import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
+import { Alert } from "./component/Alert.jsx";
 
 //Custom Pages
 import { Home } from "./pages/Home.jsx";
@@ -19,7 +20,7 @@ import { UserPrivate } from "./pages/UserPrivate.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
 import { Characters } from "./pages/Characters.jsx";
-import { CharacterById} from "./pages/CharacterById.jsx";
+import { CharacterById } from "./pages/CharacterById.jsx";
 import { Planets } from "./pages/Planets.jsx";
 import { PlanetById } from "./pages/PlanetById.jsx";
 import { Starships } from "./pages/Starships.jsx";
@@ -38,32 +39,38 @@ const Layout = () => {
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
-        <div>
+        <div className="d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Characters />} path="/characters" />
-                        <Route element={<CharacterById/>} path="/character/:id" />
-                        <Route element={<Planets />} path="/planets" />
-                        <Route element={<PlanetById />} path="/planet/:id" />
-                        <Route element={<Starships />} path="/starships" />
-                        <Route element={<StarshipsById />} path="/starship/:id" />
-                        <Route element={<Contacts />} path="/contact" />
-                        <Route element={<UserPrivate />} path="/userprivate" />
-                        <Route element={<Login />} path="/login" />
-                        <Route element={<SignUp />} path="/signup" />
-                        <Route element={<AddContact />} path="/add-contact" />
-                        <Route element={<EditContact />} path="/edit-contact/:id" />
-                        <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<Error404 />} path="*" />
-                    </Routes>
+                    <Alert />
+                    
+                    <div className="flex-grow-1">
+                        <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<Characters />} path="/characters" />
+                            <Route element={<CharacterById />} path="/character/:id" />
+                            <Route element={<Planets />} path="/planets" />
+                            <Route element={<PlanetById />} path="/planet/:id" />
+                            <Route element={<Starships />} path="/starships" />
+                            <Route element={<StarshipsById />} path="/starship/:id" />
+                            <Route element={<Contacts />} path="/contact" />
+                            <Route element={<UserPrivate />} path="/userprivate" />
+                            <Route element={<Login />} path="/login" />
+                            <Route element={<SignUp />} path="/signup" />
+                            <Route element={<AddContact />} path="/add-contact" />
+                            <Route element={<EditContact />} path="/edit-contact/:id" />
+                            <Route element={<Single />} path="/single/:theid" />
+                            <Route element={<Error404 />} path="*" />
+                        </Routes>
+                    </div>
+    
                     <Footer />
                 </ScrollToTop>
             </BrowserRouter>
         </div>
     );
+    
 };
 
 export default injectContext(Layout);

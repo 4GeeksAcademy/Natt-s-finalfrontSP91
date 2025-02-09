@@ -1,9 +1,18 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
+
+	const handleLogout = () => {
+		actions.logout();
+
+		localStorage.removeItem('token');
+
+		Navigate("/")
+	};
+
 	return (
 		<nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
 			<div className="container-fluid d-flex justify-content-end">
@@ -23,12 +32,20 @@ export const Navbar = () => {
 				<Link to="/contact" className="text-decoration-none">
 					<span className="navbar-brand text-muted h1 mx-3">Contacts</span>
 				</Link>
-				<Link to="/login" className="text-decoration-none">
-					<span className="navbar-brand text-muted h1 mx-3">Login</span>
-				</Link>
 				<Link to="/signup" className="text-decoration-none">
 					<span className="navbar-brand text-muted h1 mx-3">Sign Up</span>
 				</Link>
+				{store.isLogged ? (
+					<button onClick={handleLogout} className="btn btn-outline-none text-warning btn-h1 ">
+					 <span className="navbar-brand text-muted h1 mx-3">Logout</span>
+					</button>
+				) : (
+
+					<Link to="/login" className="text-decoration-none">
+						<span className="navbar-brand text-muted h1 mx-3">Login</span>
+					</Link>
+
+				)}
 
 				<div className="dropdown">
 					<button

@@ -24,6 +24,8 @@ export const EditContact = () => {
             }
         }
     }, [id, store.contacts]);
+
+    
     const handleSave = () => {
        
         actions.editContact(id,{

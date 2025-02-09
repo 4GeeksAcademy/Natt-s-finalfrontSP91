@@ -7,37 +7,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
 			contacts: [],
-			favorites:[]
+			favorites: [],
+			userprivate: [],
+			isLogged: false,
+			alert: { text: '', background: 'primary', visible: false },
 
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
+			setAlert: (newAlert) => setStore({ alert: newAlert }),
+			hideAlert: () =>{
+				setStore({ alert: {...getStore().alert, visible:false} });
+			},
+
 			//SingUp
 			SignUp: async (userData) => {
 				const uri = `${process.env.BACKEND_URL}/api/signup`;
 				console.log("Llamando a:", uri);
 
 				const options = {
-					method : 'POST',
-					headers : {
+					method: 'POST',
+					headers: {
 						"Content-Type": "application/json"
-				},
-				body: JSON.stringify(userData)
-			};
-			const response = await fetch(uri, options);
+					},
+					body: JSON.stringify(userData)
+				};
+				const response = await fetch(uri, options);
 				if (!response.ok) {
 					console.log("error", response.status, response.statusText)
 					return
@@ -57,22 +52,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify(dataToSend)
 				};
-				console.log(options);
+				console.log(uri, options);
 				const response = await fetch(uri, options);
 				if (!response.ok) {
 					// tratar el error
 					console.log('Error:', response.status, response.statusText);
 					if (response.status == 401) {
 						console.log('en el error 401');
-						setStore({alert: {text: 'Email o contraseña no válido', background: 'danger', visible: true}})
+						setStore({ alert: { text: 'Email o contraseña no válido', background: 'danger', visible: true } })
 					}
 					return   // IMPORTANTE
 				}
 				const data = await response.json()
+				console.log(data)
 				localStorage.setItem('token', data.access_token)
 				setStore({
 					isLogged: true,
-					user: { email: data.results.email } 
+					user: {
+						email: data.results.email,
+						first_name: data.results.first_name,
+						last_name: data.results.last_name
+					}
 				})
 			},
 			getUser: async (userId) => {
@@ -90,7 +90,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				console.log(data);
-				
+
 			},
 			accessProtected: async () => {
 				const uri = `${process.env.BACKEND_URL}/api/protected`;
@@ -107,20 +107,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json()
-				setStore({alert: {text: data.message, background: 'success', visible: true}})
+				setStore({ alert: { text: data.message, background: 'success', visible: true } })
 			},
-			
+			logout:() =>{
+				setStore({
+					isLogged: false,
+					user: null,
+				});
+				localStorage.removeItem("token");
+			},
+
 			//boton favoritos
-			addFavorites: (item) =>{
+			addFavorites: (item) => {
 				const favorites = getStore().favorites;
-				if(!favorites.includes(item)){
-				setStore({favorites: [...getStore().favorites,item]});
-			}
+				if (!favorites.includes(item)) {
+					setStore({ favorites: [...getStore().favorites, item] });
+				}
 
 			},
-			removeFavorites: (item) =>{
+			removeFavorites: (item) => {
 				const favorites = getStore().favorites;
-				setStore({favorites:favorites.filter((favorite) => favorite != item)})
+				setStore({ favorites: favorites.filter((favorite) => favorite != item) })
 			},
 			//CONTACT LIST
 			// GET: Obtener los contactos
@@ -207,7 +214,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ characters: data.results })
-				localStorage.setItem('localCharacters',JSON.stringify(data.results))
+				localStorage.setItem('localCharacters', JSON.stringify(data.results))
 			},
 			//GetCharacterID
 			getCharacter: async (id) => {
@@ -222,7 +229,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ character: data.result.properties })
-				localStorage.setItem('localCharacterId',JSON.stringify(data.result.properties))
+				localStorage.setItem('localCharacterId', JSON.stringify(data.result.properties))
 			},
 			//GetPlanets
 			getPlanets: async () => {
@@ -237,7 +244,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ planets: data.results })
-				localStorage.setItem('localPlanets',JSON.stringify(data.results))
+				localStorage.setItem('localPlanets', JSON.stringify(data.results))
 
 			},
 			//GetPlanetID
@@ -253,7 +260,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ planet: data.result.properties })
-				localStorage.setItem('localPlanetId',JSON.stringify(data.result.properties))
+				localStorage.setItem('localPlanetId', JSON.stringify(data.result.properties))
 
 			},
 			//GetStarships
@@ -269,7 +276,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ starships: data.results })
-				localStorage.setItem('localStarships',JSON.stringify(data.results))
+				localStorage.setItem('localStarships', JSON.stringify(data.results))
 
 			},
 			//GetStarshipID
@@ -285,7 +292,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ starship: data.result.properties })
-				localStorage.setItem('localStarshipsId',JSON.stringify(data.result.properties))
+				localStorage.setItem('localStarshipsId', JSON.stringify(data.result.properties))
 
 			},
 
